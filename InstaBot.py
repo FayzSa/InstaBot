@@ -51,7 +51,7 @@ class InstaBot:
             self.Browser.get(PicLink)
             time.sleep(3)
             self.Browser.find_element_by_css_selector(".dCJp8").click()
-            if n > NumberOfLikes:
+            if n >= NumberOfLikes:
                 break
             else:
                 n = n+1
