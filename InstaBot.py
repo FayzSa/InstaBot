@@ -61,7 +61,7 @@ Password= input("Password : ")
 Fa = InstaBot(UserName, Password)
 #Your User Name and Password
 Fa.login()
-UserN1 = input("Profile You Want Like its Pics : ")
+UserN1 = input("User You Want Like its Pics : ")
 Num = input("How Many Likes : ")
 Fa.getLinks(UserN1)
 Fa.AutoLiker(int(Num))
