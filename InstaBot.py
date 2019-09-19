@@ -9,7 +9,8 @@ class InstaBot:
         self.Browser = webdriver.Chrome("C:\chromedriver")
         self.Browser.get("https://www.instagram.com/")
         self.PicLinks = []
-        time.sleep(6)
+        self.PicsToLike = 0
+        time.sleep(4)
 
     def login(self):
         self.Browser.find_element_by_link_text("Log in").click()
@@ -32,24 +33,28 @@ class InstaBot:
         self.PicLinks = [hrfPic.get_attribute("href") for hrfPic in ATag]
         Old = self.PicLinks[-1]
         for i in range(300):
-            self.Browser.execute_script(f"window.scrollTo(0,{S});")
-            S += 6000
-            time.sleep(3)
+            if Old != self.PicLinks[-1]:
+                Old = self.PicLinks[-1]
+            if len(self.PicLinks) <= self.PicsToLike:
+                break
+            else:
+                break
+            self.Browser.execute_script(f"window.scrollTo(0,document.body.scrollHeight);")
+            #S += 6000
+            time.sleep(2)
             ATag = self.Browser.find_elements_by_css_selector(".v1Nh3 > a")
             for hrfPic in ATag:
                 if hrfPic.get_attribute("href") not in self.PicLinks:
                     self.PicLinks.append(hrfPic.get_attribute("href"))
-            if Old != self.PicLinks[-1]:
-                Old = self.PicLinks[-1]
-            else:
-                break
 
+                    
     def AutoLiker(self,NumberOfLikes):
         #Number of Likes = Number Pics you want Like Starting from the top
         n = 1
+        self.PicsToLike = NumberOfLikes
         for PicLink in self.PicLinks:
             self.Browser.get(PicLink)
-            time.sleep(3)
+            time.sleep(1)
             self.Browser.find_element_by_css_selector(".dCJp8").click()
             if n >= NumberOfLikes:
                 break
@@ -61,7 +66,7 @@ Password= input("Password : ")
 Fa = InstaBot(UserName, Password)
 #Your User Name and Password
 Fa.login()
-UserN1 = input("User You Want Like its Pics : ")
+UserN1 = input("Profile You Want Like its Pics : ")
 Num = input("How Many Likes : ")
 Fa.getLinks(UserN1)
 Fa.AutoLiker(int(Num))
