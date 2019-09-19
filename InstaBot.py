@@ -28,7 +28,7 @@ class InstaBot:
         #Insta User Name of The person you want Like his or her Pics , it should be correct
         self.PicLinks = []
         self.Browser.get(f"https://www.instagram.com/{InstaUserName}")
-        S = 6000
+        
         ATag = self.Browser.find_elements_by_css_selector(".v1Nh3 > a")
         self.PicLinks = [hrfPic.get_attribute("href") for hrfPic in ATag]
         Old = self.PicLinks[-1]
@@ -40,7 +40,6 @@ class InstaBot:
             else:
                 break
             self.Browser.execute_script(f"window.scrollTo(0,document.body.scrollHeight);")
-            #S += 6000
             time.sleep(2)
             ATag = self.Browser.find_elements_by_css_selector(".v1Nh3 > a")
             for hrfPic in ATag:
