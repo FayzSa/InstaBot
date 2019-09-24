@@ -28,11 +28,15 @@ class InstaBot:
         self.PicLinks = []
         self.PicsToLike = NumberOfLikes
         self.Browser.get(f"https://www.instagram.com/{InstaUserName}")
-        S = 6000
+        Max = self.Browser.find_element_by_css_selector(".g47SY").text
+        Max = Max.replace(",", "")
+        Max = int(Max)
         ATag = self.Browser.find_elements_by_css_selector(".v1Nh3 > a")
         self.PicLinks = [hrfPic.get_attribute("href") for hrfPic in ATag]
-        Old = self.PicLinks[-1]
         for i in range(300):
+            if Max < self.PicsToLike:
+                print("The Number of Pictures To Likes is Big Than This Profile Pictures")
+                break
             if len(self.PicLinks) >= self.PicsToLike:
                 break
             self.Browser.execute_script(f"window.scrollTo(0,document.body.scrollHeight);")
@@ -41,9 +45,7 @@ class InstaBot:
             for hrfPic in ATag:
                 if hrfPic.get_attribute("href") not in self.PicLinks:
                     self.PicLinks.append(hrfPic.get_attribute("href"))
-            if Old != self.PicLinks[-1]:
-                Old = self.PicLinks[-1]
-            elif Old == self.PicsLinks[-1]:
+            if int(Max) == len(self.PicLinks):
                 break
 
                     
