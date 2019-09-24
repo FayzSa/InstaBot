@@ -34,7 +34,6 @@ class InstaBot:
         Old = self.PicLinks[-1]
         for i in range(300):
             if len(self.PicLinks) >= self.PicsToLike:
-                print("Breaked")
                 break
             self.Browser.execute_script(f"window.scrollTo(0,document.body.scrollHeight);")
             time.sleep(2)
