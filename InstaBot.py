@@ -23,21 +23,18 @@ class InstaBot:
         time.sleep(2)
         self.Browser.find_element_by_css_selector(".HoLwm").click()
 
-
-    def getLinks(self,InstaUserName):
+    def getLinks(self,InstaUserName,NumberOfLikes):
         #Insta User Name of The person you want Like his or her Pics , it should be correct
         self.PicLinks = []
+        self.PicsToLike = NumberOfLikes
         self.Browser.get(f"https://www.instagram.com/{InstaUserName}")
-        
+        S = 6000
         ATag = self.Browser.find_elements_by_css_selector(".v1Nh3 > a")
         self.PicLinks = [hrfPic.get_attribute("href") for hrfPic in ATag]
         Old = self.PicLinks[-1]
         for i in range(300):
-            if Old != self.PicLinks[-1]:
-                Old = self.PicLinks[-1]
-            if len(self.PicLinks) <= self.PicsToLike:
-                break
-            else:
+            if len(self.PicLinks) >= self.PicsToLike:
+                print("Breaked")
                 break
             self.Browser.execute_script(f"window.scrollTo(0,document.body.scrollHeight);")
             time.sleep(2)
@@ -45,17 +42,20 @@ class InstaBot:
             for hrfPic in ATag:
                 if hrfPic.get_attribute("href") not in self.PicLinks:
                     self.PicLinks.append(hrfPic.get_attribute("href"))
+            if Old != self.PicLinks[-1]:
+                Old = self.PicLinks[-1]
+            elif Old == self.PicsLinks[-1]:
+                break
 
                     
-    def AutoLiker(self,NumberOfLikes):
+    def AutoLiker(self):
         #Number of Likes = Number Pics you want Like Starting from the top
         n = 1
-        self.PicsToLike = NumberOfLikes
         for PicLink in self.PicLinks:
             self.Browser.get(PicLink)
             time.sleep(1)
             self.Browser.find_element_by_css_selector(".dCJp8").click()
-            if n >= NumberOfLikes:
+            if n >= self.PicsToLike:
                 break
             else:
                 n = n+1
@@ -67,5 +67,5 @@ Fa = InstaBot(UserName, Password)
 Fa.login()
 UserN1 = input("Profile You Want Like its Pics : ")
 Num = input("How Many Likes : ")
-Fa.getLinks(UserN1)
-Fa.AutoLiker(int(Num))
+Fa.getLinks(UserN1,int(Num))
+Fa.AutoLiker()
